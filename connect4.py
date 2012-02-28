@@ -84,28 +84,32 @@ class Game(object):
 						return
 	    
     def verticalCheck(self, row, col):
+        #print("checking vert")
         fourInARow = False
         consecutiveCount = 0
-		
+    
         for i in xrange(row, 6):
             if self.board[i][col] == self.board[row][col]:
                 consecutiveCount += 1
+                #print(consecutiveCount)
             else:
                 break
-		
-		if consecutiveCount >= 4:
-			fourInARow = True
-			self.winner = self.board[row][col]
-		
-		return fourInARow
+    
+        if consecutiveCount >= 4:
+            fourInARow = True
+            self.winner = self.board[row][col]
+    
+        return fourInARow
     
     def horizontalCheck(self, row, col):
+        print("checking horiz")
         fourInARow = False
         consecutiveCount = 0
         
         for j in xrange(col, 7):
             if self.board[row][j] == self.board[row][col]:
                 consecutiveCount += 1
+                print(consecutiveCount)
             else:
                 break
 
