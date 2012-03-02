@@ -7,6 +7,10 @@
 # Connect 4 Module
 # February 27, 2012
 
+import random
+import os
+import time
+
 class Game(object):
     """ Game object that holds state of Connect 4 board and game values
     """
@@ -16,14 +20,43 @@ class Game(object):
     finished = None
     winner = None
     turn = None
+    players = [None, None]
     
     def __init__(self):
         self.round = 1
         self.finished = False
-        self.winner = ' '
+        self.winner = None
+        
+        # do cross-platform clear screen
+        os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
+        print("Welcome to Connect 4. \nShould Player 1 be a Human or a \ Computer?")
+        while self.players[0] == None:
+            choice = str(raw_input("Type 'H' or 'C': "))
+            if choice == "Human" or choice.lower() == "h":
+                name = str(raw_input("What is Player 1's name? "))
+                self.players[0] = Player(name, 'R')
+            elif choice == "Computer" or choice.lower() == "c":
+                name = str(raw_input("What is Player 1's name? "))
+                self.players[0] = AIPlayer(name, 'R')
+            else:
+                print("Invalid choice, please try again")
+        print("{0} will be red (R)".format(self.players[0].name))
+        
+        print("Should Player 2 be a Human or a Computer?")
+        while self.players[1] == None:
+            choice = str(raw_input("Type 'H' or 'C': "))
+            if choice == "Human" or choice.lower() == "h":
+                name = str(raw_input("What is Player 2's name? "))
+                self.players[1] = Player(name, 'B')
+            elif choice == "Computer" or choice.lower() == "c":
+                name = str(raw_input("What is Player 2's name? "))
+                self.players[1] = AIPlayer(name, 'B')
+            else:
+                print("Invalid choice, please try again")
+        print("{0} will be black (B)".format(self.players[1].name))
 		
 		# Red always goes first (arbitrary choice on my part)
-        self.turn = 'R'
+        self.turn = self.players[0]
 		
         self.board = []
         for i in xrange(6):
@@ -32,28 +65,29 @@ class Game(object):
                 self.board[i].append(' ')
 
     def switchTurn(self):
-        if self.turn == 'R':
-            self.turn = 'Y'
+        if self.turn == self.players[0]:
+            self.turn = self.players[1]
         else:
-		    self.turn = 'R'
+		    self.turn = self.players[0]
 
         # increment the round
         self.round += 1
 
-    def move(self, player, column):
-        if player != self.turn:
-	        print("It's not your turn")
-	        return
-		
+    def nextMove(self):
+        player = self.turn
+
         # there are only 42 legal places for pieces on the board
         # exactly one piece is added to the board each turn
         if self.round > 42:
             self.finished = True
             # this would be a stalemate :(
+        
+        # move is the column that player want's to play
+        move = player.move()
 
         for i in xrange(6):
-            if self.board[i][column] == ' ':
-                self.board[i][column] = player
+            if self.board[i][move] == ' ':
+                self.board[i][move] = player.color
                 self.switchTurn()
                 self.checkForFours()
                 self.printState()
@@ -97,25 +131,29 @@ class Game(object):
     
         if consecutiveCount >= 4:
             fourInARow = True
-            self.winner = self.board[row][col]
+            if self.players[0].color == self.board[row][col]:
+                self.winner = self.players[0]
+            else:
+                self.winner = self.players[1]
     
         return fourInARow
     
     def horizontalCheck(self, row, col):
-        print("checking horiz")
         fourInARow = False
         consecutiveCount = 0
         
         for j in xrange(col, 7):
             if self.board[row][j] == self.board[row][col]:
                 consecutiveCount += 1
-                print(consecutiveCount)
             else:
                 break
 
         if consecutiveCount >= 4:
             fourInARow = True
-            self.winner = self.board[row][col]
+            if self.players[0].color == self.board[row][col]:
+                self.winner = self.players[0]
+            else:
+                self.winner = self.players[1]
 
         return fourInARow
     
@@ -136,7 +174,10 @@ class Game(object):
 			
         if consecutiveCount >= 4:
             fourInARow = True
-            self.winner = self.board[row][col]
+            if self.players[0].color == self.board[row][col]:
+                self.winner = self.players[0]
+            else:
+                self.winner = self.players[1]
             return fourInARow
 
         # check for diagonals with negative slope
@@ -153,29 +194,75 @@ class Game(object):
 
         if consecutiveCount >= 4:
             fourInARow = True
-            self.winner = self.board[row][col]
+            if self.players[0].color == self.board[row][col]:
+                self.winner = self.players[0]
+            else:
+                self.winner = self.players[1]
             return fourInARow
 
         return fourInARow
 	
     def printState(self):
+        # cross-platform clear screen
+        os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
+        print("Connect Four!")
         print("Round: " + str(self.round))
 
         for i in xrange(5, -1, -1):
+            print("\t"),
             for j in xrange(7):
-                print("|" + str(self.board[i][j])),
+                print("| " + str(self.board[i][j])),
             print("|")
-        print(" - - - - - - - ")
+        print("\t  1   2   3   4   5   6   7 ")
 
         if self.finished:
             print("Game Over!")
             if self.winner != ' ':
-                print(str(self.winner) + " is the winner")
+                print(str(self.winner.name) + " is the winner")
             else:
                 print("Game was a draw")
                 
-#class Player(object):
-#    """ Player object
-#    """
-#    def __init__(self):
+class Player(object):
+    """ Player object.  This class is for human players.
+    """
+    
+    type = None # possible types are "Human" and "AI"
+    name = None
+    color = None
+    def __init__(self, name, color):
+        self.type = "Human"
+        self.name = name
+        self.color = color
+    
+    def move(self):
+        print("{0}'s turn.  {0} is {1}".format(self.name, self.color))
+        column = None
+        while column == None:
+            choice = int(raw_input("Enter a move (by column number): ")) - 1
+            if 0 <= choice <= 6:
+                column = choice
+            else:
+                print("Invalid choice, try again")
+        return column
+
+class AIPlayer(Player):
+    """ AIPlayer object that extends Player
+    """
+    
+    difficulty = None
+    def __init__(self, name, color, difficulty = 1):
+        self.type = "AI"
+        self.name = name
+        self.color = color
+        self.difficulty = difficulty
         
+    def move(self):
+         
+        print("{0}'s turn.  {0} is {1}".format(self.name, self.color))
+        # sleeping for about 1 second makes it looks like he's thinking
+        time.sleep(random.randrange(8, 17, 1)/10.0)
+        return random.randint(0, 6)
+
+
+
+
