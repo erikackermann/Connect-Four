@@ -21,7 +21,7 @@ class Game(object):
     winner = None
     turn = None
     players = [None, None]
-    game_name = u"Connect 4\u2122" # U+2122 is "tm" this is a joke
+    game_name = u"Connecter Quatre\u2122" # U+2122 is "tm" this is a joke
     
     def __init__(self):
         self.round = 1
