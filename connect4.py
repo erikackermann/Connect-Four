@@ -207,7 +207,7 @@ class Game(object):
     def printState(self):
         # cross-platform clear screen
         os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
-        print("{0}!".format(self.game_name))
+        print(u"{0}!".format(self.game_name))
         print("Round: " + str(self.round))
 
         for i in xrange(5, -1, -1):
