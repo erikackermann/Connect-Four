@@ -259,7 +259,6 @@ class AIPlayer(Player):
         self.difficulty = difficulty
         
     def move(self):
-         
         print("{0}'s turn.  {0} is {1}".format(self.name, self.color))
         # sleeping for about 1 second makes it looks like he's thinking
         time.sleep(random.randrange(8, 17, 1)/10.0)
