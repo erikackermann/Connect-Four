@@ -21,6 +21,7 @@ class Game(object):
     winner = None
     turn = None
     players = [None, None]
+    game_name = u"Connect 4\u2122" # U+2122 is "tm" this is a joke
     
     def __init__(self):
         self.round = 1
@@ -29,7 +30,8 @@ class Game(object):
         
         # do cross-platform clear screen
         os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
-        print("Welcome to Connect 4. \nShould Player 1 be a Human or a \ Computer?")
+        print(u"Welcome to {0}!".format(self.game_name))
+        print("Should Player 1 be a Human or a Computer?")
         while self.players[0] == None:
             choice = str(raw_input("Type 'H' or 'C': "))
             if choice == "Human" or choice.lower() == "h":
@@ -205,7 +207,7 @@ class Game(object):
     def printState(self):
         # cross-platform clear screen
         os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
-        print("Connect Four!")
+        print("{0}!".format(self.game_name))
         print("Round: " + str(self.round))
 
         for i in xrange(5, -1, -1):
