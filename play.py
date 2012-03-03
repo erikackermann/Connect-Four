@@ -18,6 +18,9 @@ def main():
     
     while not g.finished:
         g.nextMove()
+    
+    if g.winner == None:
+        print("Stalemate!!  Thanks for playing!")
         
 if __name__ == "__main__": # Default "main method" idiom.
     main()

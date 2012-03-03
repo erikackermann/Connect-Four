@@ -14,14 +14,9 @@ class Minimax(object):
     board = None
     colors = ["x", "o"]
     
-    def __init__(self, board, my_color):
+    def __init__(self, board):
         # copy the board to self.board
         self.board = [x[:] for x in board]
-        self.my_color = my_color
-        if self.my_color == self.colors[0]:
-            self.opp_color = self.colors[1]
-        else:
-            self.opp_color = self.colors[0]
             
     def bestMove(self, depth, state, curr_player):
         """ Returns the best move (as a column number) and the associated alpha
@@ -43,7 +38,7 @@ class Minimax(object):
                 temp = self.makeMove(state, col, curr_player)
                 legal_moves[col] = -self.search(depth-1, temp, opp_player)
         
-        best_alpha = -999999
+        best_alpha = -99999999
         best_move = None
         print("legal_moves", legal_moves)
         for move, alpha in legal_moves.items():
@@ -55,13 +50,13 @@ class Minimax(object):
         
     def search(self, depth, state, curr_player):
         """ Searches the tree at depth 'depth'
-            By default, the state is the board, and the player whose
-            turn it is is whomever called this search
+            By default, the state is the board, and curr_player is whomever 
+            called this search
             
-            Returns and the alpha value
+            Returns the alpha value
         """
         
-        # enumerate all legal moves
+        # enumerate all legal moves from this state
         legal_moves = []
         for i in xrange(7):
             # if column i is a legal move...
@@ -70,8 +65,8 @@ class Minimax(object):
                 temp = self.makeMove(state, i, curr_player)
                 legal_moves.append(temp)
         
-        # if node is a terminal node or depth == 0...
-        if depth == 0 or len(legal_moves) == 0:
+        # if this node (state) is a terminal node or depth == 0...
+        if depth == 0 or len(legal_moves) == 0 or self.gameIsOver(state):
             # return the heuristic value of node
             return self.value(state, curr_player)
         
@@ -81,7 +76,7 @@ class Minimax(object):
         else:
             opp_player = self.colors[0]
 
-        alpha = -9999999
+        alpha = -99999999
         for child in legal_moves:
             if child == None:
                 print("child == None (search)")
@@ -99,6 +94,15 @@ class Minimax(object):
         
         # if we get here, the column is full
         return False
+    
+    def gameIsOver(self, state):
+        if self.checkForStreak(state, self.colors[0], 4) >= 1:
+            return True
+        elif self.checkForStreak(state, self.colors[1], 4) >= 1:
+            return True
+        else:
+            return False
+        
     
     def makeMove(self, state, column, color):
         """ Change a state object to reflect a player, denoted by color,
@@ -130,17 +134,20 @@ class Minimax(object):
         opp_fours = self.checkForStreak(state, o_color, 4)
         opp_threes = self.checkForStreak(state, o_color, 3)
         opp_twos = self.checkForStreak(state, o_color, 2)
-        
-        return my_fours*99999 + my_threes*100 + my_twos*10 -\
-            opp_fours*9999 - opp_threes*100 - opp_twos*10
-        
+        if opp_fours > 0:
+            return -10000
+            print("opponent wins :(")
+        else:
+            return my_fours*10000 + my_threes*100 + my_twos
+        #return my_fours - 2*opp_fours
             
     def checkForStreak(self, state, color, streak):
         count = 0
         # for each piece in the board...
         for i in xrange(6):
             for j in xrange(7):
-                if state[i][j] != color:
+                # ...that is of the color we're looking for...
+                if state[i][j] == color:
                     # check if a vertical streak starts at (i, j)
                     count += self.verticalStreak(i, j, state, streak)
                     

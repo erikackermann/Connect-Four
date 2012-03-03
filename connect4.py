@@ -10,7 +10,7 @@
 import random
 import os
 import time
-#import minimax
+from minimax import Minimax
 
 class Game(object):
     """ Game object that holds state of Connect 4 board and game values
@@ -85,9 +85,10 @@ class Game(object):
         if self.round > 42:
             self.finished = True
             # this would be a stalemate :(
+            return
         
         # move is the column that player want's to play
-        move = player.move()
+        move = player.move(self.board)
 
         for i in xrange(6):
             if self.board[i][move] == ' ':
@@ -239,7 +240,7 @@ class Player(object):
         self.name = name
         self.color = color
     
-    def move(self):
+    def move(self, state):
         print("{0}'s turn.  {0} is {1}".format(self.name, self.color))
         column = None
         while column == None:
@@ -257,17 +258,22 @@ class AIPlayer(Player):
     """
     
     difficulty = None
-    def __init__(self, name, color, difficulty = 1):
+    def __init__(self, name, color, difficulty=3):
         self.type = "AI"
         self.name = name
         self.color = color
         self.difficulty = difficulty
         
-    def move(self):
+    def move(self, state):
         print("{0}'s turn.  {0} is {1}".format(self.name, self.color))
+        
         # sleeping for about 1 second makes it looks like he's thinking
-        time.sleep(random.randrange(8, 17, 1)/10.0)
-        return random.randint(0, 6)
+        #time.sleep(random.randrange(8, 17, 1)/10.0)
+        #return random.randint(0, 6)
+        
+        m = Minimax(state)
+        best_move, value = m.bestMove(self.difficulty, state, self.color)
+        return best_move
 
 
 
