@@ -10,7 +10,7 @@
 import random
 import os
 import time
-import minimax
+#import minimax
 
 class Game(object):
     """ Game object that holds state of Connect 4 board and game values
@@ -23,6 +23,7 @@ class Game(object):
     turn = None
     players = [None, None]
     game_name = u"Connecter Quatre\u2122" # U+2122 is "tm" this is a joke
+    colors = ["x", "o"]
     
     def __init__(self):
         self.round = 1
@@ -37,26 +38,26 @@ class Game(object):
             choice = str(raw_input("Type 'H' or 'C': "))
             if choice == "Human" or choice.lower() == "h":
                 name = str(raw_input("What is Player 1's name? "))
-                self.players[0] = Player(name, 'R')
+                self.players[0] = Player(name, self.colors[0])
             elif choice == "Computer" or choice.lower() == "c":
                 name = str(raw_input("What is Player 1's name? "))
-                self.players[0] = AIPlayer(name, 'R')
+                self.players[0] = AIPlayer(name, self.colors[0])
             else:
                 print("Invalid choice, please try again")
-        print("{0} will be red (R)".format(self.players[0].name))
+        print("{0} will be {1}".format(self.players[0].name, self.colors[0]))
         
         print("Should Player 2 be a Human or a Computer?")
         while self.players[1] == None:
             choice = str(raw_input("Type 'H' or 'C': "))
             if choice == "Human" or choice.lower() == "h":
                 name = str(raw_input("What is Player 2's name? "))
-                self.players[1] = Player(name, 'B')
+                self.players[1] = Player(name, self.colors[1])
             elif choice == "Computer" or choice.lower() == "c":
                 name = str(raw_input("What is Player 2's name? "))
-                self.players[1] = AIPlayer(name, 'B')
+                self.players[1] = AIPlayer(name, self.colors[1])
             else:
                 print("Invalid choice, please try again")
-        print("{0} will be black (B)".format(self.players[1].name))
+        print("{0} will be {1}".format(self.players[1].name, self.colors[1]))
 		
 		# Red always goes first (arbitrary choice on my part)
         self.turn = self.players[0]
