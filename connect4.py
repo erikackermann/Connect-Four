@@ -10,6 +10,7 @@
 import random
 import os
 import time
+import minimax
 
 class Game(object):
     """ Game object that holds state of Connect 4 board and game values
@@ -249,6 +250,8 @@ class Player(object):
 
 class AIPlayer(Player):
     """ AIPlayer object that extends Player
+        The AI algorithm is minimax, the difficulty parameter is the depth to which 
+        the search tree is expanded.
     """
     
     difficulty = None
