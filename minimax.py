@@ -7,6 +7,8 @@
 # Connect 4 Module
 # February 27, 2012
 
+import random
+
 class Minimax(object):
     """ Minimax object that takes a current connect four board state
     """
@@ -41,8 +43,10 @@ class Minimax(object):
         best_alpha = -99999999
         best_move = None
         print("legal_moves", legal_moves)
-        for move, alpha in legal_moves.items():
-            if alpha > best_alpha:
+        moves = legal_moves.items()
+        random.shuffle(moves)
+        for move, alpha in moves:
+            if alpha >= best_alpha:
                 best_alpha = alpha
                 best_move = move
         

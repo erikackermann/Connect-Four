@@ -258,7 +258,7 @@ class AIPlayer(Player):
     """
     
     difficulty = None
-    def __init__(self, name, color, difficulty=3):
+    def __init__(self, name, color, difficulty=4):
         self.type = "AI"
         self.name = name
         self.color = color
