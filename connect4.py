@@ -217,6 +217,7 @@ class Game(object):
             for j in xrange(7):
                 print("| " + str(self.board[i][j])),
             print("|")
+        print("\t  _   _   _   _   _   _   _ ")
         print("\t  1   2   3   4   5   6   7 ")
 
         if self.finished:
