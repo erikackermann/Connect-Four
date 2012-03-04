@@ -67,6 +67,22 @@ class Game(object):
             self.board.append([])
             for j in xrange(7):
                 self.board[i].append(' ')
+    
+    def newGame(self):
+        """ Function to reset the game, but not the names or colors
+        """
+        self.round = 1
+        self.finished = False
+        self.winner = None
+        
+        # Red always goes first (arbitrary choice on my part)
+        self.turn = self.players[0]
+		
+        self.board = []
+        for i in xrange(6):
+            self.board.append([])
+            for j in xrange(7):
+                self.board[i].append(' ')
 
     def switchTurn(self):
         if self.turn == self.players[0]:
@@ -251,6 +267,7 @@ class Player(object):
                 print("Invalid choice, try again")
         return column
 
+
 class AIPlayer(Player):
     """ AIPlayer object that extends Player
         The AI algorithm is minimax, the difficulty parameter is the depth to which 
@@ -258,7 +275,7 @@ class AIPlayer(Player):
     """
     
     difficulty = None
-    def __init__(self, name, color, difficulty=4):
+    def __init__(self, name, color, difficulty=5):
         self.type = "AI"
         self.name = name
         self.color = color
