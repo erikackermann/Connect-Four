@@ -42,7 +42,6 @@ class Minimax(object):
         
         best_alpha = -99999999
         best_move = None
-        print("legal_moves", legal_moves)
         moves = legal_moves.items()
         random.shuffle(moves)
         for move, alpha in moves:
@@ -140,7 +139,6 @@ class Minimax(object):
         opp_twos = self.checkForStreak(state, o_color, 2)
         if opp_fours > 0:
             return -10000
-            print("opponent wins :(")
         else:
             return my_fours*10000 + my_threes*100 + my_twos
         #return my_fours - 2*opp_fours
@@ -151,7 +149,7 @@ class Minimax(object):
         for i in xrange(6):
             for j in xrange(7):
                 # ...that is of the color we're looking for...
-                if state[i][j] == color:
+                if state[i][j].lower() == color.lower():
                     # check if a vertical streak starts at (i, j)
                     count += self.verticalStreak(i, j, state, streak)
                     
@@ -166,7 +164,7 @@ class Minimax(object):
     def verticalStreak(self, row, col, state, streak):
         consecutiveCount = 0
         for i in xrange(row, 6):
-            if state[i][col] == state[row][col]:
+            if state[i][col].lower() == state[row][col].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -179,7 +177,7 @@ class Minimax(object):
     def horizontalStreak(self, row, col, state, streak):
         consecutiveCount = 0
         for j in xrange(col, 7):
-            if state[row][j] == state[row][col]:
+            if state[row][j].lower() == state[row][col].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -198,7 +196,7 @@ class Minimax(object):
         for i in xrange(row, 6):
             if j > 6:
                 break
-            elif state[i][j] == state[row][col]:
+            elif state[i][j].lower() == state[row][col].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -213,7 +211,7 @@ class Minimax(object):
         for i in xrange(row, -1, -1):
             if j > 6:
                 break
-            elif state[i][j] == state[row][col]:
+            elif state[i][j].lower() == state[row][col].lower():
                 consecutiveCount += 1
             else:
                 break

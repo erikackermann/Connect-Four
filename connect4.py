@@ -41,7 +41,8 @@ class Game(object):
                 self.players[0] = Player(name, self.colors[0])
             elif choice == "Computer" or choice.lower() == "c":
                 name = str(raw_input("What is Player 1's name? "))
-                self.players[0] = AIPlayer(name, self.colors[0])
+                diff = int(raw_input("Enter difficulty for this AI (1 - 4)"))
+                self.players[0] = AIPlayer(name, self.colors[0], diff+1)
             else:
                 print("Invalid choice, please try again")
         print("{0} will be {1}".format(self.players[0].name, self.colors[0]))
@@ -54,7 +55,8 @@ class Game(object):
                 self.players[1] = Player(name, self.colors[1])
             elif choice == "Computer" or choice.lower() == "c":
                 name = str(raw_input("What is Player 2's name? "))
-                self.players[1] = AIPlayer(name, self.colors[1])
+                diff = int(raw_input("Enter difficulty for this AI (1 - 4)"))
+                self.players[1] = AIPlayer(name, self.colors[1], diff+1)
             else:
                 print("Invalid choice, please try again")
         print("{0} will be {1}".format(self.players[1].name, self.colors[1]))
@@ -119,24 +121,29 @@ class Game(object):
         return
 	
     def checkForFours(self):
-	    # for each piece in the board...
-		for i in xrange(6):
-			for j in xrange(7):
-				if self.board[i][j] != ' ':
-					# check if a vertical four-in-a-row starts at (i, j)
-					if self.verticalCheck(i, j):
-						self.finished = True
-						return
-
-					# check if a horizontal four-in-a-row starts at (i, j)
-					if self.horizontalCheck(i, j):
-						self.finished = True
-						return
-					
-					# check if a diagonal (either way) four-in-a-row starts at (i, j)
-					if self.diagonalCheck(i, j):
-						self.finished = True
-						return
+        # for each piece in the board...
+        for i in xrange(6):
+            for j in xrange(7):
+                if self.board[i][j] != ' ':
+                    # check if a vertical four-in-a-row starts at (i, j)
+                    if self.verticalCheck(i, j):
+                        self.finished = True
+                        self.highlightFour(i, j, 'vertical')
+                        return
+                    
+                    # check if a horizontal four-in-a-row starts at (i, j)
+                    if self.horizontalCheck(i, j):
+                        self.highlightFour(i, j, 'horizontal')
+                        self.finished = True
+                        return
+                    
+                    # check if a diagonal (either way) four-in-a-row starts at (i, j)
+                    # also, get the slope of the four if there is one
+                    diag_fours, slope = self.diagonalCheck(i, j)
+                    if diag_fours:
+                        self.finished = True
+                        self.highlightFour(i, j, 'diagonal', slope)
+                        return
 	    
     def verticalCheck(self, row, col):
         #print("checking vert")
@@ -144,15 +151,14 @@ class Game(object):
         consecutiveCount = 0
     
         for i in xrange(row, 6):
-            if self.board[i][col] == self.board[row][col]:
+            if self.board[i][col].lower() == self.board[row][col].lower():
                 consecutiveCount += 1
-                #print(consecutiveCount)
             else:
                 break
     
         if consecutiveCount >= 4:
             fourInARow = True
-            if self.players[0].color == self.board[row][col]:
+            if self.players[0].color.lower() == self.board[row][col].lower():
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
@@ -164,14 +170,14 @@ class Game(object):
         consecutiveCount = 0
         
         for j in xrange(col, 7):
-            if self.board[row][j] == self.board[row][col]:
+            if self.board[row][j].lower() == self.board[row][col].lower():
                 consecutiveCount += 1
             else:
                 break
 
         if consecutiveCount >= 4:
             fourInARow = True
-            if self.players[0].color == self.board[row][col]:
+            if self.players[0].color.lower() == self.board[row][col].lower():
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
@@ -180,6 +186,7 @@ class Game(object):
     
     def diagonalCheck(self, row, col):
         fourInARow = False
+        slope = None
 
         # check for diagonals with positive slope
         consecutiveCount = 0
@@ -187,7 +194,7 @@ class Game(object):
         for i in xrange(row, 6):
             if j > 6:
                 break
-            elif self.board[i][j] == self.board[row][col]:
+            elif self.board[i][j].lower() == self.board[row][col].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -195,11 +202,12 @@ class Game(object):
 			
         if consecutiveCount >= 4:
             fourInARow = True
-            if self.players[0].color == self.board[row][col]:
+            slope = 'positive'
+            if self.players[0].color.lower() == self.board[row][col].lower():
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
-            return fourInARow
+            return fourInARow, slope
 
         # check for diagonals with negative slope
         consecutiveCount = 0
@@ -207,7 +215,7 @@ class Game(object):
         for i in xrange(row, -1, -1):
             if j > 6:
                 break
-            elif self.board[i][j] == self.board[row][col]:
+            elif self.board[i][j].lower() == self.board[row][col].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -215,13 +223,41 @@ class Game(object):
 
         if consecutiveCount >= 4:
             fourInARow = True
-            if self.players[0].color == self.board[row][col]:
+            slope = 'negative'
+            if self.players[0].color.lower() == self.board[row][col].lower():
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
-            return fourInARow
+            return fourInARow, slope
 
-        return fourInARow
+        return fourInARow, slope
+    
+    def highlightFour(self, row, col, direction, slope=None):
+        """ This function enunciates four-in-a-rows by capitalizing
+            the character for those pieces on the board
+        """
+        
+        if direction == 'vertical':
+            for i in xrange(4):
+                self.board[row+i][col] = self.board[row+i][col].upper()
+            return
+        
+        elif direction == 'horizontal':
+            for i in xrange(4):
+                self.board[row][col+i] = self.board[row][col+i].upper()
+            return
+        
+        elif direction == 'diagonal' and slope == 'positive':
+            for i in xrange(4):
+                self.board[row+i][col+i] = self.board[row+i][col+i].upper()
+            return
+        
+        elif direction == 'diagonal' and slope == 'negative':
+            for i in xrange(4):
+                self.board[row-i][col+i] = self.board[row-i][col+i].upper()
+            return
+        else:
+            print("Error - Cannot enunciate four-of-a-kind")
 	
     def printState(self):
         # cross-platform clear screen
