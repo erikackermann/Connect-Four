@@ -41,7 +41,7 @@ class Game(object):
                 self.players[0] = Player(name, self.colors[0])
             elif choice == "Computer" or choice.lower() == "c":
                 name = str(raw_input("What is Player 1's name? "))
-                diff = int(raw_input("Enter difficulty for this AI (1 - 4)"))
+                diff = int(raw_input("Enter difficulty for this AI (1 - 4) "))
                 self.players[0] = AIPlayer(name, self.colors[0], diff+1)
             else:
                 print("Invalid choice, please try again")
@@ -55,7 +55,7 @@ class Game(object):
                 self.players[1] = Player(name, self.colors[1])
             elif choice == "Computer" or choice.lower() == "c":
                 name = str(raw_input("What is Player 2's name? "))
-                diff = int(raw_input("Enter difficulty for this AI (1 - 4)"))
+                diff = int(raw_input("Enter difficulty for this AI (1 - 4) "))
                 self.players[1] = AIPlayer(name, self.colors[1], diff+1)
             else:
                 print("Invalid choice, please try again")
@@ -128,12 +128,10 @@ class Game(object):
                     # check if a vertical four-in-a-row starts at (i, j)
                     if self.verticalCheck(i, j):
                         self.finished = True
-                        self.highlightFour(i, j, 'vertical')
                         return
                     
                     # check if a horizontal four-in-a-row starts at (i, j)
                     if self.horizontalCheck(i, j):
-                        self.highlightFour(i, j, 'horizontal')
                         self.finished = True
                         return
                     
@@ -141,8 +139,8 @@ class Game(object):
                     # also, get the slope of the four if there is one
                     diag_fours, slope = self.diagonalCheck(i, j)
                     if diag_fours:
+                        print(slope)
                         self.finished = True
-                        self.highlightFour(i, j, 'diagonal', slope)
                         return
 	    
     def verticalCheck(self, row, col):
@@ -186,6 +184,7 @@ class Game(object):
     
     def diagonalCheck(self, row, col):
         fourInARow = False
+        count = 0
         slope = None
 
         # check for diagonals with positive slope
@@ -201,13 +200,12 @@ class Game(object):
             j += 1 # increment column when row is incremented
 			
         if consecutiveCount >= 4:
-            fourInARow = True
+            count += 1
             slope = 'positive'
             if self.players[0].color.lower() == self.board[row][col].lower():
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
-            return fourInARow, slope
 
         # check for diagonals with negative slope
         consecutiveCount = 0
@@ -219,18 +217,43 @@ class Game(object):
                 consecutiveCount += 1
             else:
                 break
-            j += 1 # increment column when row is incremented
+            j += 1 # increment column when row is decremented
 
         if consecutiveCount >= 4:
-            fourInARow = True
+            count += 1
             slope = 'negative'
             if self.players[0].color.lower() == self.board[row][col].lower():
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
-            return fourInARow, slope
 
+        if count > 0:
+            fourInARow = True
+        if count == 2:
+            slope = 'both'
         return fourInARow, slope
+    
+    def findFours(self):
+        """ Finds start i,j of four-in-a-row
+            Calls highlightFours
+        """
+    
+        for i in xrange(6):
+            for j in xrange(7):
+                if self.board[i][j] != ' ':
+                    # check if a vertical four-in-a-row starts at (i, j)
+                    if self.verticalCheck(i, j):
+                        self.highlightFour(i, j, 'vertical')
+                    
+                    # check if a horizontal four-in-a-row starts at (i, j)
+                    if self.horizontalCheck(i, j):
+                        self.highlightFour(i, j, 'horizontal')
+                    
+                    # check if a diagonal (either way) four-in-a-row starts at (i, j)
+                    # also, get the slope of the four if there is one
+                    diag_fours, slope = self.diagonalCheck(i, j)
+                    if diag_fours:
+                        self.highlightFour(i, j, 'diagonal', slope)
     
     def highlightFour(self, row, col, direction, slope=None):
         """ This function enunciates four-in-a-rows by capitalizing
@@ -240,22 +263,20 @@ class Game(object):
         if direction == 'vertical':
             for i in xrange(4):
                 self.board[row+i][col] = self.board[row+i][col].upper()
-            return
         
         elif direction == 'horizontal':
             for i in xrange(4):
                 self.board[row][col+i] = self.board[row][col+i].upper()
-            return
         
-        elif direction == 'diagonal' and slope == 'positive':
-            for i in xrange(4):
-                self.board[row+i][col+i] = self.board[row+i][col+i].upper()
-            return
+        elif direction == 'diagonal':
+            if slope == 'positive' or slope == 'both':
+                for i in xrange(4):
+                    self.board[row+i][col+i] = self.board[row+i][col+i].upper()
         
-        elif direction == 'diagonal' and slope == 'negative':
-            for i in xrange(4):
-                self.board[row-i][col+i] = self.board[row-i][col+i].upper()
-            return
+            elif slope == 'negative' or slope == 'both':
+                for i in xrange(4):
+                    self.board[row-i][col+i] = self.board[row-i][col+i].upper()
+        
         else:
             print("Error - Cannot enunciate four-of-a-kind")
 	
@@ -275,7 +296,7 @@ class Game(object):
 
         if self.finished:
             print("Game Over!")
-            if self.winner != ' ':
+            if self.winner != None:
                 print(str(self.winner.name) + " is the winner")
             else:
                 print("Game was a draw")

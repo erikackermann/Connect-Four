@@ -25,8 +25,10 @@ def main():
         while not g.finished:
             g.nextMove()
         
+        g.findFours()
+        g.printState()
+        
         if g.winner == None:
-            print("Stalemate!!")
             win_counts[2] += 1
         
         elif g.winner == player1:
