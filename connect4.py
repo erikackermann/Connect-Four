@@ -317,7 +317,10 @@ class Player(object):
         print("{0}'s turn.  {0} is {1}".format(self.name, self.color))
         column = None
         while column == None:
-            choice = int(raw_input("Enter a move (by column number): ")) - 1
+            try:
+                choice = int(raw_input("Enter a move (by column number): ")) - 1
+            except ValueError:
+                choice = None
             if 0 <= choice <= 6:
                 column = choice
             else:

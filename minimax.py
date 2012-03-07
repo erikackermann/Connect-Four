@@ -138,9 +138,9 @@ class Minimax(object):
         opp_threes = self.checkForStreak(state, o_color, 3)
         opp_twos = self.checkForStreak(state, o_color, 2)
         if opp_fours > 0:
-            return -10000
+            return -100000
         else:
-            return my_fours*10000 + my_threes*100 + my_twos
+            return my_fours*100000 + my_threes*100 + my_twos
         #return my_fours - 2*opp_fours
             
     def checkForStreak(self, state, color, streak):
@@ -169,7 +169,7 @@ class Minimax(object):
             else:
                 break
     
-        if consecutiveCount == streak:
+        if consecutiveCount >= streak:
             return 1
         else:
             return 0
@@ -182,7 +182,7 @@ class Minimax(object):
             else:
                 break
 
-        if consecutiveCount == streak:
+        if consecutiveCount >= streak:
             return 1
         else:
             return 0
@@ -202,7 +202,7 @@ class Minimax(object):
                 break
             j += 1 # increment column when row is incremented
             
-        if consecutiveCount == streak:
+        if consecutiveCount >= streak:
             total += 1
 
         # check for diagonals with negative slope
@@ -217,7 +217,7 @@ class Minimax(object):
                 break
             j += 1 # increment column when row is incremented
 
-        if consecutiveCount == streak:
+        if consecutiveCount >= streak:
             total += 1
 
         return total
