@@ -13,8 +13,10 @@ python play.py
 EXPLANATION OF OUR IMPLEMENTATION:
 
 Main Module
-The main module for our game is play.py, which initializes an instance of Game. When the game is initialized, the program asks for the user to select their input: another human or the computer. 
-displays the score (should be 0 for both players)
+The main module for our game is play.py, while connect4.py contains all function and object definitions. Within connect4.py, the objects that are defined are Game, PLayer, AIPlayer, 
+When play.py is executed, an instance of Game is initialized.  
+
+When the game is initialized, the program asks the user to select a human or computer player for Player 1 (who will be represented in the game with "x") and Player 2 (represented with "o"). The user may select for human vs human, human vs computer, and even computer vs computer. The user also is asked to name each player. For each human player, an instance of Player is initialized and for each computer player, an instance of AIPlayer is initialized. 
 
 OUR HEURISTIC FOR MINIMAX:
 
