@@ -11,7 +11,10 @@ python play.py
 
 
 EXPLANATION OF OUR IMPLEMENTATION:
-The main module for our game is play.py, which initializes an instance of Game, displays the score (should be 0 and loops next move 
+
+Main Module
+The main module for our game is play.py, which initializes an instance of Game. When the game is initialized, the program asks for the user to select their input: another human or the computer. 
+displays the score (should be 0 for both players)
 
 OUR HEURISTIC FOR MINIMAX:
 
