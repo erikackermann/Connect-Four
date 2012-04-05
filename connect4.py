@@ -77,7 +77,7 @@ class Game(object):
         self.finished = False
         self.winner = None
         
-        # Red always goes first (arbitrary choice on my part)
+        # x always goes first (arbitrary choice on my part)
         self.turn = self.players[0]
 		
         self.board = []
