@@ -11,7 +11,7 @@ python play.py
 
 
 EXPLANATION OF OUR IMPLEMENTATION:
-
+The main module for our game is play.py, which initializes an instance of Game, displays the score (should be 0 and loops next move 
 
 OUR HEURISTIC FOR MINIMAX:
 
