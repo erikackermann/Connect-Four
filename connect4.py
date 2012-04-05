@@ -61,7 +61,7 @@ class Game(object):
                 print("Invalid choice, please try again")
         print("{0} will be {1}".format(self.players[1].name, self.colors[1]))
 		
-		# Red always goes first (arbitrary choice on my part)
+	# x always goes first (arbitrary choice on my part)
         self.turn = self.players[0]
 		
         self.board = []
