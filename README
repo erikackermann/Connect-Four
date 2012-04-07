@@ -6,14 +6,28 @@ Final Project
 
 
 HOW TO RUN:
-Run the command line game with:
-python play.py
+Run the command line game with: "python play.py"
+
+The game will then prompt you to make Players (and name them) before you can start playing.  The user may select for human vs human, human vs computer, and even computer vs computer.
 
 
 EXPLANATION OF OUR IMPLEMENTATION:
 
 Main Module
-The main module for our game is play.py, while connect4.py contains all function and object definitions. Within connect4.py, the objects that are defined are Game, PLayer, and AIPlayer. When play.py is executed, an instance of Game is initialized. When the game is initialized, the program asks the user to select a human or computer player for Player 1 (who will be represented in the game with "x") and Player 2 (represented with "o"). The user may select for human vs human, human vs computer, and even computer vs computer. The user also is asked to name each player. For each human player, an instance of Player is initialized and for each computer player, an instance of AIPlayer is initialized. 
+The main module for our game is play.py, while connect4.py contains all function and object definitions. 
+
+Within connect4.py, the objects that are defined are Game, Player, and AIPlayer. When play.py is executed, an instance of Game is initialized. When the game is initialized, the program asks the user to select a human or computer player for Player 1 (who will be represented in the game with "x") and Player 2 (represented with "o").  For each human player, an instance of Player is initialized and for each computer player, an instance of AIPlayer is initialized.  AIPlayer is a subclass of Player.  When an AIPlayer is initialized, a difficulty value is set represents the level to which the minimax algorithm searches.
+
+After a game is played, the program prompts the user to play again.  The program tracks wins/losses/ties over multiple rounds and displays these statistics after each game.
+
+When a Four-in-a-row is made, the characters representing the pieces in that streak are capitalized.  This makes it clear why the game ended.
+
+minimax.py is a module which contains an implementation of the minimax algorithm for Connect 4.  This module also has methods for creating state objects (states of the board) as well as functions for checking characteristic of a given state.  An example characteristic is the number of streaks of length k.  There is a method which counts this number, and which takes a search length parameter.
+
 
 OUR HEURISTIC FOR MINIMAX:
 
+The heuristic in minimax is used to evaluate the relative "goodness" of a board configuration.  The heuristic we developed is as follows:
+    goodness = (my four-in-a-rows)*100000 + (my three-in-a-rows)*100 + (my two-in-a-rows)
+    OR
+    if my opponent has 1 or more four in a rows, then goodness = -100000

@@ -135,13 +135,12 @@ class Minimax(object):
         my_threes = self.checkForStreak(state, color, 3)
         my_twos = self.checkForStreak(state, color, 2)
         opp_fours = self.checkForStreak(state, o_color, 4)
-        opp_threes = self.checkForStreak(state, o_color, 3)
-        opp_twos = self.checkForStreak(state, o_color, 2)
+        #opp_threes = self.checkForStreak(state, o_color, 3)
+        #opp_twos = self.checkForStreak(state, o_color, 2)
         if opp_fours > 0:
             return -100000
         else:
             return my_fours*100000 + my_threes*100 + my_twos
-        #return my_fours - 2*opp_fours
             
     def checkForStreak(self, state, color, streak):
         count = 0
