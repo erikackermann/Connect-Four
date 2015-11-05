@@ -60,10 +60,10 @@ class Game(object):
             else:
                 print("Invalid choice, please try again")
         print("{0} will be {1}".format(self.players[1].name, self.colors[1]))
-		
-	# x always goes first (arbitrary choice on my part)
+        
+    # x always goes first (arbitrary choice on my part)
         self.turn = self.players[0]
-		
+        
         self.board = []
         for i in xrange(6):
             self.board.append([])
@@ -79,7 +79,7 @@ class Game(object):
         
         # x always goes first (arbitrary choice on my part)
         self.turn = self.players[0]
-		
+        
         self.board = []
         for i in xrange(6):
             self.board.append([])
@@ -90,7 +90,7 @@ class Game(object):
         if self.turn == self.players[0]:
             self.turn = self.players[1]
         else:
-		    self.turn = self.players[0]
+            self.turn = self.players[0]
 
         # increment the round
         self.round += 1
@@ -119,7 +119,7 @@ class Game(object):
         # if we get here, then the column is full
         print("Invalid move (column is full)")
         return
-	
+    
     def checkForFours(self):
         # for each piece in the board...
         for i in xrange(6):
@@ -142,7 +142,7 @@ class Game(object):
                         print(slope)
                         self.finished = True
                         return
-	    
+        
     def verticalCheck(self, row, col):
         #print("checking vert")
         fourInARow = False
@@ -198,7 +198,7 @@ class Game(object):
             else:
                 break
             j += 1 # increment column when row is incremented
-			
+            
         if consecutiveCount >= 4:
             count += 1
             slope = 'positive'
@@ -279,7 +279,7 @@ class Game(object):
         
         else:
             print("Error - Cannot enunciate four-of-a-kind")
-	
+    
     def printState(self):
         # cross-platform clear screen
         os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
