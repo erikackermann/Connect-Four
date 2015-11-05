@@ -287,9 +287,9 @@ class Game(object):
         print("Round: " + str(self.round))
 
         for i in range(5, -1, -1):
-            print("\t"),
+            print("\t", end="")
             for j in range(7):
-                print("| " + str(self.board[i][j])),
+                print("| " + str(self.board[i][j]), end=" ")
             print("|")
         print("\t  _   _   _   _   _   _   _ ")
         print("\t  1   2   3   4   5   6   7 ")
