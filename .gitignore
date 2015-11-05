@@ -1,4 +1,6 @@
+__pycache__/
 
-connect4.pyc
+#vim swap-file:
+*.sw?
 
-minimax.pyc
+*.pyc
