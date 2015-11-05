@@ -1,12 +1,8 @@
 Erik Ackermann
-Charlene Wang
-
-Python - Spring 2012
-Final Project
-
 
 HOW TO RUN:
-Run the command line game with: "python play.py"
+Requires Python 3
+Run the command line game with: "python3 play.py"
 
 The game will then prompt you to make Players (and name them) before you can start playing.  The user may select for human vs human, human vs computer, and even computer vs computer.
 
