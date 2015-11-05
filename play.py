@@ -40,7 +40,7 @@ def main():
         printStats(player1, player2, win_counts)
         
         while True:
-            play_again = str(raw_input("Would you like to play again? "))
+            play_again = str(input("Would you like to play again? "))
             
             if play_again.lower() == 'y' or play_again.lower() == 'yes': 
                 g.newGame()
