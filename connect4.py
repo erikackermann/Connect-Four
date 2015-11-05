@@ -65,9 +65,9 @@ class Game(object):
         self.turn = self.players[0]
         
         self.board = []
-        for i in xrange(6):
+        for i in range(6):
             self.board.append([])
-            for j in xrange(7):
+            for j in range(7):
                 self.board[i].append(' ')
     
     def newGame(self):
@@ -81,9 +81,9 @@ class Game(object):
         self.turn = self.players[0]
         
         self.board = []
-        for i in xrange(6):
+        for i in range(6):
             self.board.append([])
-            for j in xrange(7):
+            for j in range(7):
                 self.board[i].append(' ')
 
     def switchTurn(self):
@@ -108,7 +108,7 @@ class Game(object):
         # move is the column that player want's to play
         move = player.move(self.board)
 
-        for i in xrange(6):
+        for i in range(6):
             if self.board[i][move] == ' ':
                 self.board[i][move] = player.color
                 self.switchTurn()
@@ -122,8 +122,8 @@ class Game(object):
     
     def checkForFours(self):
         # for each piece in the board...
-        for i in xrange(6):
-            for j in xrange(7):
+        for i in range(6):
+            for j in range(7):
                 if self.board[i][j] != ' ':
                     # check if a vertical four-in-a-row starts at (i, j)
                     if self.verticalCheck(i, j):
@@ -148,7 +148,7 @@ class Game(object):
         fourInARow = False
         consecutiveCount = 0
     
-        for i in xrange(row, 6):
+        for i in range(row, 6):
             if self.board[i][col].lower() == self.board[row][col].lower():
                 consecutiveCount += 1
             else:
@@ -167,7 +167,7 @@ class Game(object):
         fourInARow = False
         consecutiveCount = 0
         
-        for j in xrange(col, 7):
+        for j in range(col, 7):
             if self.board[row][j].lower() == self.board[row][col].lower():
                 consecutiveCount += 1
             else:
@@ -190,7 +190,7 @@ class Game(object):
         # check for diagonals with positive slope
         consecutiveCount = 0
         j = col
-        for i in xrange(row, 6):
+        for i in range(row, 6):
             if j > 6:
                 break
             elif self.board[i][j].lower() == self.board[row][col].lower():
@@ -210,7 +210,7 @@ class Game(object):
         # check for diagonals with negative slope
         consecutiveCount = 0
         j = col
-        for i in xrange(row, -1, -1):
+        for i in range(row, -1, -1):
             if j > 6:
                 break
             elif self.board[i][j].lower() == self.board[row][col].lower():
@@ -238,8 +238,8 @@ class Game(object):
             Calls highlightFours
         """
     
-        for i in xrange(6):
-            for j in xrange(7):
+        for i in range(6):
+            for j in range(7):
                 if self.board[i][j] != ' ':
                     # check if a vertical four-in-a-row starts at (i, j)
                     if self.verticalCheck(i, j):
@@ -261,20 +261,20 @@ class Game(object):
         """
         
         if direction == 'vertical':
-            for i in xrange(4):
+            for i in range(4):
                 self.board[row+i][col] = self.board[row+i][col].upper()
         
         elif direction == 'horizontal':
-            for i in xrange(4):
+            for i in range(4):
                 self.board[row][col+i] = self.board[row][col+i].upper()
         
         elif direction == 'diagonal':
             if slope == 'positive' or slope == 'both':
-                for i in xrange(4):
+                for i in range(4):
                     self.board[row+i][col+i] = self.board[row+i][col+i].upper()
         
             elif slope == 'negative' or slope == 'both':
-                for i in xrange(4):
+                for i in range(4):
                     self.board[row-i][col+i] = self.board[row-i][col+i].upper()
         
         else:
@@ -286,9 +286,9 @@ class Game(object):
         print(u"{0}!".format(self.game_name))
         print("Round: " + str(self.round))
 
-        for i in xrange(5, -1, -1):
+        for i in range(5, -1, -1):
             print("\t"),
-            for j in xrange(7):
+            for j in range(7):
                 print("| " + str(self.board[i][j])),
             print("|")
         print("\t  _   _   _   _   _   _   _ ")

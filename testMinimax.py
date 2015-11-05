@@ -4,9 +4,9 @@ from minimax import *
 import connect4
 
 def printState(board):
-    for i in xrange(5, -1, -1):
+    for i in range(5, -1, -1):
         print("\t"),
-        for j in xrange(7):
+        for j in range(7):
             print("| " + str(board[i][j])),
         print("|")
     print("\t  _   _   _   _   _   _   _ ")
