@@ -35,13 +35,13 @@ class Game(object):
         print(u"Welcome to {0}!".format(self.game_name))
         print("Should Player 1 be a Human or a Computer?")
         while self.players[0] == None:
-            choice = str(raw_input("Type 'H' or 'C': "))
+            choice = str(input("Type 'H' or 'C': "))
             if choice == "Human" or choice.lower() == "h":
-                name = str(raw_input("What is Player 1's name? "))
+                name = str(input("What is Player 1's name? "))
                 self.players[0] = Player(name, self.colors[0])
             elif choice == "Computer" or choice.lower() == "c":
-                name = str(raw_input("What is Player 1's name? "))
-                diff = int(raw_input("Enter difficulty for this AI (1 - 4) "))
+                name = str(input("What is Player 1's name? "))
+                diff = int(input("Enter difficulty for this AI (1 - 4) "))
                 self.players[0] = AIPlayer(name, self.colors[0], diff+1)
             else:
                 print("Invalid choice, please try again")
@@ -49,13 +49,13 @@ class Game(object):
         
         print("Should Player 2 be a Human or a Computer?")
         while self.players[1] == None:
-            choice = str(raw_input("Type 'H' or 'C': "))
+            choice = str(input("Type 'H' or 'C': "))
             if choice == "Human" or choice.lower() == "h":
-                name = str(raw_input("What is Player 2's name? "))
+                name = str(input("What is Player 2's name? "))
                 self.players[1] = Player(name, self.colors[1])
             elif choice == "Computer" or choice.lower() == "c":
-                name = str(raw_input("What is Player 2's name? "))
-                diff = int(raw_input("Enter difficulty for this AI (1 - 4) "))
+                name = str(input("What is Player 2's name? "))
+                diff = int(input("Enter difficulty for this AI (1 - 4) "))
                 self.players[1] = AIPlayer(name, self.colors[1], diff+1)
             else:
                 print("Invalid choice, please try again")
@@ -318,7 +318,7 @@ class Player(object):
         column = None
         while column == None:
             try:
-                choice = int(raw_input("Enter a move (by column number): ")) - 1
+                choice = int(input("Enter a move (by column number): ")) - 1
             except ValueError:
                 choice = None
             if 0 <= choice <= 6:
