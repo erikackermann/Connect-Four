@@ -43,7 +43,7 @@ class Minimax(object):
         best_alpha = -99999999
         best_move = None
         moves = legal_moves.items()
-        random.shuffle(moves)
+        random.shuffle(list(moves))
         for move, alpha in moves:
             if alpha >= best_alpha:
                 best_alpha = alpha
